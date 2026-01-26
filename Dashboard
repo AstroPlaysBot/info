@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AstroPlays</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      width: 100%;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      box-sizing: border-box;
+      background-color: #e0e0e0;
+    }
+
+    header button {
+      padding: 5px 10px;
+      cursor: pointer;
+      border: 1px solid #333;
+      background-color: #fff;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    h1 {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .carousel-container {
+      display: flex;
+      align-items: center;
+      margin-top: 50px;
+    }
+
+    .arrow {
+      font-size: 30px;
+      cursor: pointer;
+      user-select: none;
+      padding: 0 20px;
+    }
+
+    .boxes {
+      display: flex;
+      gap: 20px;
+    }
+
+    .box {
+      width: 200px;
+      height: 150px;
+      background-color: #4975d4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 20px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <button id="btn-de">DE</button>
+    <button id="btn-en">EN</button>
+    <button id="btn-dashboard" onclick="window.location.href='https://example.com'">Dashboard</button>
+  </header>
+
+  <h1>AstroPlays</h1>
+
+  <div class="carousel-container">
+    <div class="arrow" id="prev">&#9664;</div>
+    <div class="boxes" id="boxes">
+      <!-- Blaue Kästen werden hier per JS eingefügt -->
+    </div>
+    <div class="arrow" id="next">&#9654;</div>
+  </div>
+
+  <script>
+    const boxContents = [
+      "Kasten 1",
+      "Kasten 2",
+      "Kasten 3",
+      "Kasten 4",
+      "Kasten 5",
+      "Kasten 6"
+    ];
+
+    let currentIndex = 0;
+    const boxesDiv = document.getElementById("boxes");
+
+    function renderBoxes() {
+      boxesDiv.innerHTML = "";
+      const leftIndex = currentIndex % boxContents.length;
+      const rightIndex = (currentIndex + 1) % boxContents.length;
+
+      const leftBox = document.createElement("div");
+      leftBox.className = "box";
+      leftBox.textContent = boxContents[leftIndex];
+
+      const rightBox = document.createElement("div");
+      rightBox.className = "box";
+      rightBox.textContent = boxContents[rightIndex];
+
+      boxesDiv.appendChild(leftBox);
+      boxesDiv.appendChild(rightBox);
+    }
+
+    document.getElementById("prev").addEventListener("click", () => {
+      currentIndex = (currentIndex - 1 + boxContents.length) % boxContents.length;
+      renderBoxes();
+    });
+
+    document.getElementById("next").addEventListener("click", () => {
+      currentIndex = (currentIndex + 1) % boxContents.length;
+      renderBoxes();
+    });
+
+    renderBoxes();
+  </script>
+
+</body>
+</html>
