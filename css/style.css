@@ -1,0 +1,83 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header {
+  width: 100%;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  box-sizing: border-box;
+  background-color: #e0e0e0;
+}
+
+header button {
+  padding: 5px 10px;
+  cursor: pointer;
+  border: 1px solid #333;
+  background-color: #fff;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+h1 {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 50px;
+}
+
+.arrow {
+  font-size: 40px;
+  cursor: pointer;
+  user-select: none;
+  padding: 0 20px;
+}
+
+.boxes {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.box {
+  background-color: #4975d4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 24px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+/* Größen von links nach rechts */
+.box:nth-child(1) {
+  width: 150px;
+  height: 150px;
+}
+.box:nth-child(2) {
+  width: 200px;
+  height: 200px;
+}
+.box:nth-child(3) {
+  width: 250px;
+  height: 250px;
+}
+.box:nth-child(4) {
+  width: 300px;
+  height: 300px;
+}
