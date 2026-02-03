@@ -1,12 +1,12 @@
 body {
   margin: 0;
   font-family: "Arial", sans-serif;
-  background: url("/images/galaxy-bg.jpg") no-repeat center center fixed;
+  background: url("/public/images/galaxy-bg.jpg") no-repeat center center fixed;
   background-size: cover;
 }
 
 .bg-galaxy {
-  background: url("/images/galaxy-bg.jpg") no-repeat center center fixed;
+  background: url("/public/images/galaxy-bg.jpg") no-repeat center center fixed;
   background-size: cover;
 }
 
