@@ -1,7 +1,7 @@
-import Navbar from "info/components/Navbar";
-import Carousel from "info/components/Carousel";
-import ScrollLink from "info/components/ScrollLink";
-import { translations } from "info/lib/i18n";
+import Navbar from "../components/Navbar";
+import Carousel from "../components/Carousel";
+import ScrollLink from "../components/ScrollLink";
+import { translations } from "../lib/i18n";
 
 export default function Home() {
   const t = translations["en"]; // Standard Englisch, später dynamisch
