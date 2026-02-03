@@ -4,26 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AstroPlays</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <header>
-    <button id="btn-de">DE</button>
-    <button id="btn-en">EN</button>
-    <button id="btn-dashboard" onclick="window.location.href='https://example.com'">Dashboard</button>
-  </header>
+<header>
+  <button>DE</button>
+  <button>EN</button>
+  <button onclick="window.location.href='https://example.com'">Dashboard</button>
+</header>
 
-  <h1>AstroPlays</h1>
+<h1>AstroPlays</h1>
 
-  <div class="carousel-container">
-    <div class="arrow" id="prev">&#9664;</div>
-    <div class="boxes" id="boxes">
-      <!-- Blaue Kästen werden hier per JS eingefügt -->
-    </div>
-    <div class="arrow" id="next">&#9654;</div>
+<div class="carousel-container">
+  <div class="arrow" id="prev">&#9664;</div>
+
+  <div class="carousel-viewport">
+    <div class="boxes" id="boxes"></div>
   </div>
 
-  <script src="js/script.js"></script>
+  <div class="arrow" id="next">&#9654;</div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
