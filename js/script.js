@@ -7,31 +7,31 @@ const boxContents = [
   "Kasten 6"
 ];
 
-let currentIndex = 0;
-const boxesDiv = document.getElementById("boxes");
+const boxes = document.getElementById("boxes");
+let index = 0;
 
-function renderBoxes() {
-  boxesDiv.innerHTML = "";
-  
-  // Zeige 4 Kästen gleichzeitig
-  for (let i = 0; i < 4; i++) {
-    const index = (currentIndex + i) % boxContents.length;
-    const box = document.createElement("div");
-    box.className = "box";
-    box.textContent = boxContents[index];
-    boxesDiv.appendChild(box);
-  }
-}
+/* Boxen erzeugen */
+boxContents.forEach((text, i) => {
+  const box = document.createElement("div");
+  box.classList.add("box");
+
+  if (i % 3 === 0) box.classList.add("small");
+  if (i % 3 === 1) box.classList.add("medium");
+  if (i % 3 === 2) box.classList.add("large");
+
+  box.textContent = text;
+  boxes.appendChild(box);
+});
+
+/* Slide-Logik */
+const step = 270; // Breite + Gap
 
 document.getElementById("prev").addEventListener("click", () => {
-  currentIndex = (currentIndex - 1 + boxContents.length) % boxContents.length;
-  renderBoxes();
+  index = Math.max(0, index - 1);
+  boxes.style.transform = `translateX(-${index * step}px)`;
 });
 
 document.getElementById("next").addEventListener("click", () => {
-  currentIndex = (currentIndex + 1) % boxContents.length;
-  renderBoxes();
+  index = Math.min(boxContents.length - 3, index + 1);
+  boxes.style.transform = `translateX(-${index * step}px)`;
 });
-
-// Initial render
-renderBoxes();
