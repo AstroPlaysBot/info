@@ -7,7 +7,7 @@
     "start": "next start"
   },
   "engines": {
-    "node": "18.x"
+    "node": "24.x"
   },
   "dependencies": {
     "next": "13.5.8",
