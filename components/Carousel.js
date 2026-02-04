@@ -1,12 +1,12 @@
 import { useState } from "react";
 
 const boxes = [
-  { id: 1, label: "Box 1" },
-  { id: 2, label: "Box 2" },
-  { id: 3, label: "Box 3" },
-  { id: 4, label: "Box 4" },
-  { id: 5, label: "Box 5" },
-  { id: 6, label: "Box 6" }
+  { id: 1, image: "/images/boxes/box-1.png" },
+  { id: 2, image: "/images/boxes/box-2.png" },
+  { id: 3, image: "/images/boxes/box-3.png" },
+  { id: 4, image: "/images/boxes/box-4.png" },
+  { id: 5, image: "/images/boxes/box-5.png" },
+  { id: 6, image: "/images/boxes/box-6.png" },
 ];
 
 export default function Carousel() {
@@ -17,40 +17,44 @@ export default function Carousel() {
     setStart((prev) => (prev - 1 + boxes.length) % boxes.length);
 
   const getVisible = () => {
-    let visible = [];
-    for (let i = 0; i < 3; i++) {
-      visible.push(boxes[(start + i) % boxes.length]);
-    }
-    return visible;
+    return Array.from({ length: 3 }, (_, i) =>
+      boxes[(start + i) % boxes.length]
+    );
   };
 
   return (
-    <div className="relative mt-10 flex items-center justify-center w-full max-w-4xl overflow-hidden">
+    <div className="relative mt-10 flex items-center justify-center w-full max-w-6xl overflow-hidden">
+      {/* Left Button */}
       <button
         onClick={prev}
-        className="absolute left-0 bg-blue-700 p-3 rounded-full z-10"
+        className="absolute left-0 bg-black/60 hover:bg-black/80 p-3 rounded-full z-10"
       >
         ◀
       </button>
 
-      <div className="flex transition-transform duration-500 space-x-5">
+      {/* Boxes */}
+      <div className="flex space-x-6 transition-all duration-500">
         {getVisible().map((box) => (
           <div
             key={box.id}
-            className="w-48 h-48 bg-blue-500 flex items-center justify-center text-2xl font-bold rounded-lg shadow-lg"
+            className="w-[320px] h-[180px] flex items-center justify-center"
           >
-            {box.label}
+            <img
+              src={box.image}
+              alt={`Box ${box.id}`}
+              className="w-full h-full object-contain drop-shadow-2xl"
+            />
           </div>
         ))}
       </div>
 
+      {/* Right Button */}
       <button
         onClick={next}
-        className="absolute right-0 bg-blue-700 p-3 rounded-full z-10"
+        className="absolute right-0 bg-black/60 hover:bg-black/80 p-3 rounded-full z-10"
       >
         ▶
       </button>
     </div>
   );
 }
-
