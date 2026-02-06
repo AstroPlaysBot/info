@@ -16,15 +16,18 @@ export default function Carousel() {
     const interval = setInterval(() => {
       setStart((prev) => (prev + 1) % boxes.length);
     }, 10000);
+
     return () => clearInterval(interval);
   }, []);
 
-  const visible = Array.from({ length: 3 }, (_, i) => boxes[(start + i) % boxes.length]);
+  const visible = Array.from(
+    { length: 3 },
+    (_, i) => boxes[(start + i) % boxes.length]
+  );
 
   return (
     <div className="w-full flex justify-center mt-10 overflow-hidden">
-      {/* HIER ist der entscheidende Fix */}
-      <div className="flex flex-nowrap items-center justify-center gap-6 w-[200px]">
+      <div className="flex flex-row flex-nowrap items-center justify-center gap-6 w-[200px]">
         {visible.map((box, index) => {
           const isCenter = index === 1;
 
