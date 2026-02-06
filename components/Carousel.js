@@ -9,18 +9,17 @@ const boxes = [
   { id: 6, image: "/images/boxes/box-6.png" },
 ];
 
-export default function AutoSwipeCarousel() {
+export default function Carousel() {
   const [start, setStart] = useState(0);
   const [visibleCount, setVisibleCount] = useState(
     typeof window !== "undefined" && window.innerWidth < 640 ? 1 : 3
   );
 
-  const containerRef = useRef(null);
   const startX = useRef(0);
   const isDragging = useRef(false);
-  const autoScrollRef = useRef(null);
+  const intervalRef = useRef(null);
 
-  // Responsive
+  // Responsive: Anzahl sichtbarer Boxen
   useEffect(() => {
     const handleResize = () => {
       setVisibleCount(window.innerWidth < 640 ? 1 : 3);
@@ -31,46 +30,30 @@ export default function AutoSwipeCarousel() {
 
   // Automatisches Scrollen
   useEffect(() => {
-    autoScrollRef.current = setInterval(() => {
-      setStart((prev) => (prev + 1) % boxes.length);
-    }, 3000);
-
-    return () => clearInterval(autoScrollRef.current);
+    startAutoScroll();
+    return () => clearInterval(intervalRef.current);
   }, []);
 
-  // Swipe/Drag
-  const handleMouseDown = (e) => {
-    isDragging.current = true;
-    startX.current = e.clientX;
-    clearInterval(autoScrollRef.current); // Stoppt auto-scroll beim Drag
+  const startAutoScroll = () => {
+    intervalRef.current = setInterval(() => {
+      setStart((prev) => (prev + 1) % boxes.length);
+    }, 3000);
   };
 
-  const handleMouseUp = (e) => {
+  // Drag / Touch
+  const handleStart = (x) => {
+    isDragging.current = true;
+    startX.current = x;
+    clearInterval(intervalRef.current);
+  };
+
+  const handleEnd = (x) => {
     if (!isDragging.current) return;
-    const diff = e.clientX - startX.current;
+    const diff = x - startX.current;
     if (diff > 50) prev();
     else if (diff < -50) next();
     isDragging.current = false;
-
-    // Restart Auto-scroll nach Drag
-    autoScrollRef.current = setInterval(() => {
-      setStart((prev) => (prev + 1) % boxes.length);
-    }, 3000);
-  };
-
-  const handleTouchStart = (e) => {
-    startX.current = e.touches[0].clientX;
-    clearInterval(autoScrollRef.current);
-  };
-
-  const handleTouchEnd = (e) => {
-    const diff = e.changedTouches[0].clientX - startX.current;
-    if (diff > 50) prev();
-    else if (diff < -50) next();
-
-    autoScrollRef.current = setInterval(() => {
-      setStart((prev) => (prev + 1) % boxes.length);
-    }, 3000);
+    startAutoScroll();
   };
 
   const prev = () => setStart((prev) => (prev - 1 + boxes.length) % boxes.length);
@@ -81,25 +64,20 @@ export default function AutoSwipeCarousel() {
   return (
     <div
       className="w-full overflow-hidden mt-10"
-      ref={containerRef}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
+      onMouseDown={(e) => handleStart(e.clientX)}
+      onMouseUp={(e) => handleEnd(e.clientX)}
       onMouseLeave={() => (isDragging.current = false)}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
+      onTouchStart={(e) => handleStart(e.touches[0].clientX)}
+      onTouchEnd={(e) => handleEnd(e.changedTouches[0].clientX)}
     >
-      <div
-        className="flex items-center gap-4 md:gap-6 transition-transform duration-700 ease-in-out"
-        style={{
-          transform: `translateX(-${start * (100 / visibleCount)}%)`,
-        }}
-      >
-        {[...boxes, ...boxes].map((box, index) => {
-          const relativeIndex = index % boxes.length;
-          const isCenter =
-            visibleCount === 1
-              ? relativeIndex === start
-              : relativeIndex === (start + centerIndex) % boxes.length;
+      <div className="flex items-center gap-4 md:gap-6">
+        {boxes.map((box, index) => {
+          // Bestimme Position relativ zum Start
+          let relIndex = (index - start + boxes.length) % boxes.length;
+          const isCenter = relIndex === centerIndex;
+
+          // Breite: 100% / Anzahl sichtbarer Boxen
+          const widthPercent = 100 / visibleCount;
 
           return (
             <div
@@ -107,7 +85,10 @@ export default function AutoSwipeCarousel() {
               className={`flex-shrink-0 transform transition-transform duration-700 ease-in-out ${
                 isCenter ? "scale-110 z-10" : "scale-100 opacity-80"
               }`}
-              style={{ width: `${100 / visibleCount}%` }}
+              style={{
+                width: `${widthPercent}%`,
+                order: relIndex // Position im flex
+              }}
             >
               <img
                 src={box.image}
