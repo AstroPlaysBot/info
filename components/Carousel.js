@@ -20,7 +20,7 @@ export default function Carousel() {
     Array.from({ length: 3 }, (_, i) => boxes[(start + i) % boxes.length]);
 
   return (
-    <div className="relative mt-10 flex items-center justify-center w-full max-w-4xl">
+    <div className="relative mt-10 flex items-center justify-center w-full max-w-5xl overflow-hidden">
       {/* Left Button */}
       <button
         onClick={prev}
@@ -30,7 +30,7 @@ export default function Carousel() {
       </button>
 
       {/* Boxes */}
-      <div className="flex items-center gap-6">
+      <div className="flex flex-nowrap items-center gap-5">
         {getVisible().map((box, index) => {
           const isCenter = index === 1;
 
@@ -38,16 +38,20 @@ export default function Carousel() {
             <div
               key={box.id}
               className={`
-                w-32 h-24 md:w-36 md:h-28
+                w-24 h-16 md:w-28 md:h-20
                 flex items-center justify-center
-                transition-transform duration-500 ease-in-out
-                ${isCenter ? "scale-125 z-10" : "scale-90 opacity-80"}
+                transition-all duration-500 ease-in-out
+                ${
+                  isCenter
+                    ? "scale-110 opacity-100 z-10"
+                    : "scale-95 opacity-70"
+                }
               `}
             >
               <img
                 src={box.image}
                 alt={`Box ${box.id}`}
-                className="w-full h-full object-contain drop-shadow-2xl"
+                className="w-full h-full object-contain drop-shadow-xl"
               />
             </div>
           );
