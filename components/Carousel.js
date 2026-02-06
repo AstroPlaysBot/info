@@ -12,19 +12,19 @@ const boxes = [
 export default function Carousel() {
   const [start, setStart] = useState(0);
 
+  // Automatisches Weiterschalten
   useEffect(() => {
     const interval = setInterval(() => {
       setStart((prev) => (prev + 1) % boxes.length);
-    }, 3000);
-
+    }, 3000); // alle 3 Sekunden
     return () => clearInterval(interval);
   }, []);
 
+  // 3 Boxen sichtbar
   const visible = Array.from({ length: 3 }, (_, i) => boxes[(start + i) % boxes.length]);
 
   return (
     <div className="w-full flex justify-center mt-10 overflow-hidden">
-      {/* WICHTIG: flex-nowrap verhindert Zeilenumbruch */}
       <div className="flex flex-nowrap items-center justify-center gap-6">
         {visible.map((box, index) => {
           const isCenter = index === 1;
@@ -32,14 +32,19 @@ export default function Carousel() {
           return (
             <div
               key={box.id}
-              className={`flex-shrink-0 transform transition-transform duration-700 ease-in-out
-                ${isCenter ? "scale-125 opacity-100 z-10" : "scale-90 opacity-60"}
+              className={`
+                flex-shrink-0 
+                transform transition-transform duration-700 ease-in-out
+                ${isCenter ? "scale-110 z-10" : "scale-100 opacity-80"}
               `}
             >
               <img
                 src={box.image}
                 alt={`Box ${box.id}`}
-                className={`object-contain ${isCenter ? "w-32 h-32" : "w-20 h-20"}`}
+                className={`object-contain 
+                  w-32 md:w-40 lg:w-48
+                  ${isCenter ? "md:w-48 lg:w-56" : ""}
+                `}
               />
             </div>
           );
