@@ -12,7 +12,6 @@ const boxes = [
 export default function Carousel() {
   const [start, setStart] = useState(0);
 
-  // Automatisches Rotieren alle 10 Sekunden
   useEffect(() => {
     const interval = setInterval(() => {
       setStart((prev) => (prev + 1) % boxes.length);
@@ -20,34 +19,29 @@ export default function Carousel() {
     return () => clearInterval(interval);
   }, []);
 
-  // 3 sichtbare Boxen
   const getVisible = () =>
     Array.from({ length: 3 }, (_, i) => boxes[(start + i) % boxes.length]);
 
   return (
-    <div className="relative mt-10 flex justify-center w-full overflow-hidden">
-      <div
-        className="flex transition-transform duration-700 ease-in-out"
-        style={{ transform: "translateX(0)" }} // Sliding wird über start gesteuert
-      >
+    <div className="w-full flex justify-center mt-10 overflow-hidden">
+      {/* feste Breite für genau 3 Boxen */}
+      <div className="flex flex-nowrap gap-6 w-[180px] justify-center">
         {getVisible().map((box, index) => {
-          const isCenter = index === 1; // mittlere Box
+          const isCenter = index === 1;
 
           return (
             <div
               key={box.id}
               className={`
-                w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12
                 flex-shrink-0
-                flex items-center justify-center
                 transition-all duration-700 ease-in-out
-                ${isCenter ? "scale-110 opacity-100 z-10" : "scale-90 opacity-60"}
+                ${isCenter ? "scale-110 opacity-100 z-10" : "scale-100 opacity-60"}
               `}
             >
               <img
                 src={box.image}
                 alt={`Box ${box.id}`}
-                className="w-full h-full object-contain"
+                className="w-12 h-12 object-contain"
               />
             </div>
           );
