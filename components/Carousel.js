@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 const boxes = [
   { id: 1, image: "/images/boxes/box-1.png" },
@@ -11,27 +11,23 @@ const boxes = [
 
 export default function Carousel() {
   const [start, setStart] = useState(0);
-  const containerRef = useRef(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setStart((prev) => (prev + 1) % boxes.length);
-    }, 3000); // alle 3 Sekunden wechseln
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);
 
-  // Berechnet die 3 sichtbaren Boxen
   const visible = Array.from({ length: 3 }, (_, i) => boxes[(start + i) % boxes.length]);
 
   return (
     <div className="w-full flex justify-center mt-10 overflow-hidden">
-      <div
-        ref={containerRef}
-        className="flex items-center justify-center gap-6 transition-transform duration-700 ease-in-out"
-      >
+      {/* WICHTIG: flex-nowrap verhindert Zeilenumbruch */}
+      <div className="flex flex-nowrap items-center justify-center gap-6">
         {visible.map((box, index) => {
-          const isCenter = index === 1; // mittlere Box
+          const isCenter = index === 1;
 
           return (
             <div
