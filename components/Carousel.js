@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const boxes = [
   { id: 1, image: "/images/boxes/box-1.png" },
@@ -12,59 +12,51 @@ const boxes = [
 export default function Carousel() {
   const [start, setStart] = useState(0);
 
-  const next = () => setStart((prev) => (prev + 1) % boxes.length);
-  const prev = () =>
-    setStart((prev) => (prev - 1 + boxes.length) % boxes.length);
+  // Automatisches Rotieren alle 10 Sekunden
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStart((prev) => (prev + 1) % boxes.length);
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
 
   const getVisible = () =>
     Array.from({ length: 3 }, (_, i) => boxes[(start + i) % boxes.length]);
 
   return (
     <div className="relative mt-10 flex items-center justify-center w-full max-w-4xl overflow-hidden">
-      {/* Left Button */}
-      <button
-        onClick={prev}
-        className="absolute left-0 bg-black/60 hover:bg-black/80 p-2 rounded-full z-10"
-      >
-        ◀
-      </button>
+      <div className="flex items-center justify-center w-full">
+        {/* Sliding Track */}
+        <div
+          className="flex transition-transform duration-700 ease-in-out"
+          style={{ transform: `translateX(-33.333%)` }} // immer mittlere Box zentrieren
+        >
+          {boxes.map((box, index) => {
+            // Berechne Position relativ zum "start"
+            const visibleIndex = (index - start + boxes.length) % boxes.length;
+            const isCenter = visibleIndex === 1; // mittlere Box
 
-      {/* Boxes */}
-      <div className="flex flex-nowrap items-center gap-3">
-        {getVisible().map((box, index) => {
-          const isCenter = index === 1;
-
-          return (
-            <div
-              key={box.id}
-              className={`
-                w-16 h-12 md:w-18 md:h-14
-                flex items-center justify-center
-                transition-all duration-500 ease-in-out
-                ${
-                  isCenter
-                    ? "scale-105 opacity-100 z-10"
-                    : "scale-95 opacity-60"
-                }
-              `}
-            >
-              <img
-                src={box.image}
-                alt={`Box ${box.id}`}
-                className="w-full h-full object-contain"
-              />
-            </div>
-          );
-        })}
+            return (
+              <div
+                key={box.id}
+                className={`
+                  w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16
+                  flex-shrink-0
+                  flex items-center justify-center
+                  transition-all duration-700 ease-in-out
+                  ${isCenter ? "scale-110 opacity-100 z-10" : "scale-90 opacity-60"}
+                `}
+              >
+                <img
+                  src={box.image}
+                  alt={`Box ${box.id}`}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
-
-      {/* Right Button */}
-      <button
-        onClick={next}
-        className="absolute right-0 bg-black/60 hover:bg-black/80 p-2 rounded-full z-10"
-      >
-        ▶
-      </button>
     </div>
   );
 }
