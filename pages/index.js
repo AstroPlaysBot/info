@@ -9,11 +9,15 @@ export default function Home() {
   return (
     <div className="bg-galaxy min-h-screen text-white">
       <Navbar />
-      <main className="flex flex-col items-center pt-20">
+
+      <main className="flex flex-col items-center pt-20 w-full overflow-x-hidden">
         <h1 className="text-5xl font-bold">AstroPlays</h1>
         <p className="mt-2 text-xl">{t.slogan}</p>
 
-        <Carousel />
+        {/* Carousel braucht volle Breite */}
+        <div className="w-full flex justify-center">
+          <Carousel />
+        </div>
 
         <div className="mt-10 w-full max-w-2xl text-center">
           <ScrollLink label={t.modules} targetId="modules" />
@@ -31,4 +35,3 @@ export default function Home() {
     </div>
   );
 }
-
