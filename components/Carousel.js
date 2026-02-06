@@ -19,14 +19,13 @@ export default function Carousel() {
     return () => clearInterval(interval);
   }, []);
 
-  const getVisible = () =>
-    Array.from({ length: 3 }, (_, i) => boxes[(start + i) % boxes.length]);
+  const visible = Array.from({ length: 3 }, (_, i) => boxes[(start + i) % boxes.length]);
 
   return (
     <div className="w-full flex justify-center mt-10 overflow-hidden">
-      {/* feste Breite für genau 3 Boxen */}
-      <div className="flex flex-nowrap gap-6 w-[180px] justify-center">
-        {getVisible().map((box, index) => {
+      {/* HIER ist der entscheidende Fix */}
+      <div className="flex flex-nowrap items-center justify-center gap-6 w-[200px]">
+        {visible.map((box, index) => {
           const isCenter = index === 1;
 
           return (
@@ -34,7 +33,7 @@ export default function Carousel() {
               key={box.id}
               className={`
                 flex-shrink-0
-                transition-all duration-700 ease-in-out
+                transition-transform duration-700 ease-in-out
                 ${isCenter ? "scale-110 opacity-100 z-10" : "scale-100 opacity-60"}
               `}
             >
