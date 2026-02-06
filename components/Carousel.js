@@ -20,42 +20,38 @@ export default function Carousel() {
     return () => clearInterval(interval);
   }, []);
 
+  // 3 sichtbare Boxen
   const getVisible = () =>
     Array.from({ length: 3 }, (_, i) => boxes[(start + i) % boxes.length]);
 
   return (
-    <div className="relative mt-10 flex items-center justify-center w-full max-w-4xl overflow-hidden">
-      <div className="flex items-center justify-center w-full">
-        {/* Sliding Track */}
-        <div
-          className="flex transition-transform duration-700 ease-in-out"
-          style={{ transform: `translateX(-33.333%)` }} // immer mittlere Box zentrieren
-        >
-          {boxes.map((box, index) => {
-            // Berechne Position relativ zum "start"
-            const visibleIndex = (index - start + boxes.length) % boxes.length;
-            const isCenter = visibleIndex === 1; // mittlere Box
+    <div className="relative mt-10 flex justify-center w-full overflow-hidden">
+      <div
+        className="flex transition-transform duration-700 ease-in-out"
+        style={{ transform: "translateX(0)" }} // Sliding wird über start gesteuert
+      >
+        {getVisible().map((box, index) => {
+          const isCenter = index === 1; // mittlere Box
 
-            return (
-              <div
-                key={box.id}
-                className={`
-                  w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16
-                  flex-shrink-0
-                  flex items-center justify-center
-                  transition-all duration-700 ease-in-out
-                  ${isCenter ? "scale-110 opacity-100 z-10" : "scale-90 opacity-60"}
-                `}
-              >
-                <img
-                  src={box.image}
-                  alt={`Box ${box.id}`}
-                  className="w-full h-full object-contain"
-                />
-              </div>
-            );
-          })}
-        </div>
+          return (
+            <div
+              key={box.id}
+              className={`
+                w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12
+                flex-shrink-0
+                flex items-center justify-center
+                transition-all duration-700 ease-in-out
+                ${isCenter ? "scale-110 opacity-100 z-10" : "scale-90 opacity-60"}
+              `}
+            >
+              <img
+                src={box.image}
+                alt={`Box ${box.id}`}
+                className="w-full h-full object-contain"
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
